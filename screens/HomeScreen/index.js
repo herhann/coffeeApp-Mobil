@@ -1,15 +1,19 @@
-import { FlatList, StyleSheet, Image, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Platform, Image, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SearchScreen from '../../components/searchBar'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
-import { fetchCoffees, addLikedCoffee, fethchLikedCoffees} from '../../api'
+import { fetchCoffees, addLikedCoffee, fethchLikedCoffees } from '../../api'
+
 
 const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("Tümü");
   const [likedItems, setLikedItems] = useState([]);
   const navigation = useNavigation();
+
+  const API_BASE_URL = Platform.OS === "android" ? "http://10.0.2.2:3000" : "http://localhost:3000";
+  console.log(API_BASE_URL);
 
   const fetchLikedItems = async () => {
     try {
@@ -45,6 +49,7 @@ const HomeScreen = () => {
     try {
       const data = await fetchCoffees();
       setCoffees(data);
+      console.log("Fetched coffees:", data);
     } catch (error) {
       console.error("Error fetching coffees:", error);
     }
@@ -108,7 +113,7 @@ const HomeScreen = () => {
           renderItem={({ item }) => (
             <View className=" h-56 w-[48%] bg-[#e4e0e0] rounded-lg ">
               <Image
-                source={{ uri: `http://localhost:3000${item.image_path}` }}
+                source={{ uri: `${API_BASE_URL}${item.image_path}` }}
                 className="w-full h-32 rounded-t-lg mb-2"
               />
               <View className="px-2">

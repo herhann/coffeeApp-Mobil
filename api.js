@@ -1,6 +1,7 @@
 import axios from "axios";
+import { Platform } from "react-native";
 
-const API_BASE_URL = "http://localhost:3000/"; 
+const API_BASE_URL = Platform.OS === "android" ? "http://10.0.2.2:3000/" : "http://localhost:3000/";
 
 
 export const fetchCoffees = async () => {
